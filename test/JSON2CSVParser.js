@@ -4,6 +4,33 @@ const json2csv = require('../lib/json2csv');
 const Json2csvParser = json2csv.Parser;
 
 module.exports = (testRunner, jsonFixtures, csvFixtures) => {
+  
+  testRunner.add('should convert decimal format in currency', (t) => {
+    const opts = {
+      fields: [{
+        label: 'Car Model',
+        value: 'carModel'
+      },{
+        label: 'Curr USD',
+        value: 'curr',
+        decimalFormat: 'currency'
+      },{
+        label: 'Price',
+        value: 'price',
+        decimalFormat: 'price'
+      },{
+        label: 'Num',
+        value: 'num'
+      }]
+    };
+
+    const parser = new Json2csvParser(opts);
+    const csv = parser.parse(jsonFixtures.currency);
+    
+    t.equal(csv, csvFixtures.currency);
+    t.end();
+  });
+
   testRunner.add('should parse json to csv, infer the fields automatically and not modify the opts passed using parse method', (t) => {
     const opts = {};
 
